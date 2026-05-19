@@ -5,6 +5,11 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(p => p.AddPolicy("corsenabled", options =>
+{
+    options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
+
 // Add services to the container.
 
 string connectionString =
@@ -31,7 +36,7 @@ app.MapGet("/", context =>
     context.Response.Redirect("/scalar");
     return Task.CompletedTask;
 });
-
+app.UseCors("corsenabled");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
